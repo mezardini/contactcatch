@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'frontend',
     'email_api',
     'rest_framework',
     'corsheaders',
