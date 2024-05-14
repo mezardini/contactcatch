@@ -53,9 +53,12 @@ class SendEmail(generics.CreateAPIView):
         project_url = request.data.get('project_url')
         message = request.data.get('message')
 
+        subject = f'Message from {name} with email of: {email}'
+        body = f"Hello Mezard,\n\nYou have received a project review request for {project_name}.\nProject URL: {project_url}\n\nMessage: {message}\n\nBest regards"
+
         send_mail(
-            name + ' from ' + email,
-            message + project_name + project_url,
+            subject,
+            body,
             'settings.EMAIL_HOST_USER',
             ['mezardini@gmail.com'],
             fail_silently=False,
