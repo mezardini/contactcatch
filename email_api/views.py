@@ -73,11 +73,12 @@ class SendEmailFF(generics.CreateAPIView):
 
     def post(self, request):
 
-        redirect_url = 'https://feedbackflow.netlify.app/'
+        # redirect_url = 'https://feedbackflow.netlify.app/'
         email = request.data.get('email')
         name = request.data.get('name')
         message = request.data.get('message')
         recipient = request.data.get('recipient')
+        redirect_url = request.data.get('redirect_url')
 
         subject = f'Message from {name}'
         body = f'''
