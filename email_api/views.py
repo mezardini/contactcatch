@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-# from .serializers import MessageSerializer
+from .serializers import SendEmailSerializer
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from django.http import HttpResponse
+from rest_framework.response import Response
 from rest_framework import generics, status, viewsets
+
 # Create your views here.
 
 
@@ -67,18 +69,21 @@ class SendEmail(generics.CreateAPIView):
 
 
 class SendEmailFF(generics.CreateAPIView):
+    serializer_class = SendEmailSerializer
+
     def post(self, request):
 
-        redirect_url = request.build_absolute_uri()
+        redirect_url = 'https://feedbackflow.netlify.app/'
         email = request.data.get('email')
         name = request.data.get('name')
         message = request.data.get('message')
         recipient = request.data.get('recipient')
 
         subject = f'Message from {name}'
-        body = f'''Hello Mezard,\n\n
-        You have received a message from {name}.\n\n
-        With email: {email}\n\n
+        body = f'''
+        Hello Mezard,\n
+        You have received a message from {name}.\n
+        With email: {email}\n
         Message: {message}\n'''
 
         send_mail(
@@ -88,4 +93,7 @@ class SendEmailFF(generics.CreateAPIView):
             [recipient],
             fail_silently=False,
         )
+        # print(redirect_url)
         return redirect(redirect_url)
+        # else:
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

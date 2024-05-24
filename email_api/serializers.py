@@ -1,22 +1,16 @@
-# from rest_framework import serializers
-# from rest_framework.serializers import ModelSerializer
-# from django.core.validators import RegexValidator
+from rest_framework import serializers
 
 
-# class MessageSerializer(serializers.FormSerializer):
-#     sender_email = serializers.EmailField(validators=[
-#         RegexValidator(
-#             regex=r'^[\w\.-]+@[\w\.-]+\.\w+$',
-#             message='Enter a valid email address.',
-#             code='invalid_email'
-#         )
-#     ])
-#     recipient_email = serializers.EmailField(validators=[
-#         RegexValidator(
-#             regex=r'^[\w\.-]+@[\w\.-]+\.\w+$',
-#             message='Enter a valid email address.',
-#             code='invalid_email'
-#         )
-#     ])
-#     subject = serializers.CharField()
-#     body = serializers.CharField()
+class SendEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    name = serializers.CharField(max_length=100)
+    message = serializers.CharField(max_length=1000)
+    recipient = serializers.EmailField()
+
+    def validate(self, data):
+        """
+        Check that the message is not empty.
+        """
+        if not data.get('message').strip():
+            raise serializers.ValidationError("Message cannot be empty.")
+        return data
